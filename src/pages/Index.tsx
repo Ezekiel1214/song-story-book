@@ -38,7 +38,7 @@ const Index = () => {
             Transform Songs into Magical Stories
           </h1>
           <p className="text-xl opacity-90">
-            Enter your favorite lyrics or song title, and watch as AI weaves a beautiful illustrated storybook inspired by the music.
+            Enter your favorite lyrics, and watch as AI weaves a beautiful illustrated storybook inspired by the music.
           </p>
         </div>
         
