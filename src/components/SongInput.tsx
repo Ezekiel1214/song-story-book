@@ -2,22 +2,28 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import LyricSearch from "./LyricSearch";
 
 interface SongInputProps {
-  onSubmit: (songData: { type: string; content: string }) => void;
+  onSubmit: (songData: { type: string; content: string; title?: string }) => void;
   isLoading: boolean;
 }
 
 const SongInput = ({ onSubmit, isLoading }: SongInputProps) => {
   const [songLyrics, setSongLyrics] = useState<string>("");
+  const [songTitle, setSongTitle] = useState<string>("");
   const [showLyricSearch, setShowLyricSearch] = useState<boolean>(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (songLyrics) {
-      onSubmit({ type: "lyrics", content: songLyrics });
+      onSubmit({ 
+        type: "lyrics", 
+        content: songLyrics,
+        title: songTitle 
+      });
     }
   };
 
@@ -50,13 +56,32 @@ const SongInput = ({ onSubmit, isLoading }: SongInputProps) => {
           </>
         ) : (
           <>
-            <Textarea
-              placeholder="Paste song lyrics here..."
-              className="min-h-[200px] text-lyrical-deepPurple"
-              value={songLyrics}
-              onChange={(e) => setSongLyrics(e.target.value)}
-              required
-            />
+            <div className="space-y-2">
+              <label htmlFor="songTitle" className="text-sm font-medium text-lyrical-deepPurple">
+                Song Title
+              </label>
+              <Input
+                id="songTitle"
+                placeholder="Enter song title..."
+                className="text-lyrical-deepPurple"
+                value={songTitle}
+                onChange={(e) => setSongTitle(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="songLyrics" className="text-sm font-medium text-lyrical-deepPurple">
+                Song Lyrics
+              </label>
+              <Textarea
+                id="songLyrics"
+                placeholder="Paste song lyrics here..."
+                className="min-h-[200px] text-lyrical-deepPurple"
+                value={songLyrics}
+                onChange={(e) => setSongLyrics(e.target.value)}
+                required
+              />
+            </div>
             
             <div className="flex justify-center">
               <Button 

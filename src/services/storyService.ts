@@ -14,7 +14,7 @@ export interface StoryData {
   pages: StoryPage[];
 }
 
-export const generateStoryFromSong = async (songData: { type: string; content: string }): Promise<StoryData> => {
+export const generateStoryFromSong = async (songData: { type: string; content: string; title?: string }): Promise<StoryData> => {
   // In a real implementation, this would call an AI API to generate story content
   // For now, we're using mock data
   console.log("Generating story from:", songData);
@@ -24,7 +24,9 @@ export const generateStoryFromSong = async (songData: { type: string; content: s
   
   // Mock data based on song input type
   let mockTitle = "";
-  if (songData.type === "title") {
+  if (songData.title) {
+    mockTitle = songData.title;
+  } else if (songData.type === "title") {
     mockTitle = `The Tale of ${songData.content}`;
   } else {
     // Extract a title from the first few words of lyrics
@@ -38,7 +40,7 @@ export const generateStoryFromSong = async (songData: { type: string; content: s
   const mockPages = Array(pageCount).fill(0).map((_, i) => {
     return {
       text: i === 0 
-        ? `Once upon a time, in a world where music came alive, there was a song that told a special story. ${songData.type === "title" ? songData.content : "This melody"} was about to take us on an adventure...`
+        ? `Once upon a time, in a world where music came alive, there was a song that told a special story. ${songData.title || (songData.type === "title" ? songData.content : "This melody")} was about to take us on an adventure...`
         : `Page ${i + 1}: The music ${i % 2 === 0 ? "swelled" : "whispered"} as the journey continued. The ${i % 2 === 0 ? "rhythm" : "harmony"} guided our hero through ${i % 3 === 0 ? "mysterious forests" : i % 3 === 1 ? "towering mountains" : "endless oceans"} of sound.`,
       imageUrl: MOCK_IMAGES[i % MOCK_IMAGES.length],
     };

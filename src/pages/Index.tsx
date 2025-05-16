@@ -10,7 +10,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [story, setStory] = useState<StoryData | null>(null);
 
-  const handleSongSubmit = async (songData: { type: string; content: string }) => {
+  const handleSongSubmit = async (songData: { type: string; content: string; title?: string }) => {
     try {
       setIsLoading(true);
       const generatedStory = await generateStoryFromSong(songData);
