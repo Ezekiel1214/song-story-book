@@ -94,7 +94,7 @@ const SongInput = ({ onSubmit, isLoading }: SongInputProps) => {
           
           <TabsContent value="title" className="space-y-4">
             <Input
-              placeholder="Enter song title and artist (e.g. Bohemian Rhapsody by Queen)"
+              placeholder="For Your Imagination"
               className="text-lyrical-deepPurple"
               value={songTitle}
               onChange={(e) => setSongTitle(e.target.value)}
