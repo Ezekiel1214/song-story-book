@@ -12,6 +12,11 @@ const Header = () => {
           </h1>
         </div>
       </div>
+      <div className="container text-center mt-1">
+        <p className="text-sm md:text-base text-white/80 italic">
+          Create stories from songs • Search lyrics • Weave tales
+        </p>
+      </div>
     </header>
   );
 };

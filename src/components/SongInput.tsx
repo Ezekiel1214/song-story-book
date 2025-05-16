@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Music, BookText } from "lucide-react";
+import { Music, BookText, Search } from "lucide-react";
+import LyricSearch from "./LyricSearch";
 
 interface SongInputProps {
   onSubmit: (songData: { type: string; content: string }) => void;
@@ -15,6 +16,7 @@ const SongInput = ({ onSubmit, isLoading }: SongInputProps) => {
   const [inputType, setInputType] = useState<string>("lyrics");
   const [songTitle, setSongTitle] = useState<string>("");
   const [songLyrics, setSongLyrics] = useState<string>("");
+  const [showLyricSearch, setShowLyricSearch] = useState<boolean>(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +25,11 @@ const SongInput = ({ onSubmit, isLoading }: SongInputProps) => {
     } else if (inputType === "lyrics" && songLyrics) {
       onSubmit({ type: "lyrics", content: songLyrics });
     }
+  };
+
+  const handleLyricSelect = (lyrics: string) => {
+    setSongLyrics(lyrics);
+    setShowLyricSearch(false);
   };
 
   return (
@@ -45,13 +52,44 @@ const SongInput = ({ onSubmit, isLoading }: SongInputProps) => {
         
         <form onSubmit={handleSubmit}>
           <TabsContent value="lyrics" className="space-y-4">
-            <Textarea
-              placeholder="Paste song lyrics here..."
-              className="min-h-[200px] text-lyrical-deepPurple"
-              value={songLyrics}
-              onChange={(e) => setSongLyrics(e.target.value)}
-              required
-            />
+            {showLyricSearch ? (
+              <>
+                <LyricSearch onLyricSelect={handleLyricSelect} />
+                
+                <div className="flex justify-center">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowLyricSearch(false)}
+                    className="text-sm"
+                  >
+                    Cancel Search
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <Textarea
+                  placeholder="Paste song lyrics here..."
+                  className="min-h-[200px] text-lyrical-deepPurple"
+                  value={songLyrics}
+                  onChange={(e) => setSongLyrics(e.target.value)}
+                  required
+                />
+                
+                <div className="flex justify-center">
+                  <Button 
+                    type="button" 
+                    onClick={() => setShowLyricSearch(true)}
+                    variant="outline"
+                    className="flex items-center gap-2 text-sm"
+                  >
+                    <Search className="h-3 w-3" />
+                    Search for Lyrics Online
+                  </Button>
+                </div>
+              </>
+            )}
           </TabsContent>
           
           <TabsContent value="title" className="space-y-4">
@@ -67,7 +105,7 @@ const SongInput = ({ onSubmit, isLoading }: SongInputProps) => {
           <Button 
             type="submit" 
             className="w-full mt-6 bg-lyrical-purple hover:bg-lyrical-deepPurple text-white font-medium py-2"
-            disabled={isLoading}
+            disabled={isLoading || (inputType === "lyrics" && !songLyrics) || (inputType === "title" && !songTitle)}
           >
             {isLoading ? "Creating Your Story..." : "Generate Storybook"}
           </Button>
